@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}AI Video Generator{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Clean Dashboard Styling */
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .generator-section {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 3rem;
+        text-align: center;
+        margin-bottom: 4rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .generator-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #fff, #bbb);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .generator-subtitle {
+        color: #888;
+        margin-bottom: 2rem;
+    }
+
+    .input-wrapper {
+        max_width: 600px;
+        margin: 0 auto 2rem;
+        position: relative;
+    }
+
+    .main-input {
+        width: 100%;
+        padding: 1.5rem;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+    }
+
+    .main-input:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-generate {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 1rem 3rem;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s;
+        min-width: 200px;
+    }
+
+    .btn-generate:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-voice {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 1rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+    }
+
+    /* Video Result Area */
+    .result-area {
+        margin-top: 3rem;
+        display: none;
+        /* Hidden by default */
+        animation: fadeIn 0.5s ease;
+    }
+
+    video {
+        width: 100%;
+        max-width: 800px;
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Loading State */
+    .loading-container {
+        display: none;
+        margin-top: 2rem;
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(255, 255, 255, 0.1);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* History Grid */
+    .history-section {
+        margin-top: 3rem;
+    }
+
+    .history-title {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 1rem;
+    }
+
+    .video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .video-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .video-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .card-info {
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #fff;
+    }
+
+    .card-meta {
+        font-size: 0.8rem;
+        color: #888;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* Language Selection */
+    .lang-options {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .lang-pill {
+        padding: 0.5rem 1rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 20px;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.2s;
+    }
+
+    .lang-pill.active {
+        border-color: var(--primary);
+        background: rgba(139, 92, 246, 0.2);
+    }
+
+    .mic-recording {
+        color: #ef4444;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    /* File Upload Input */
+    #audioFileInput {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+
+    <!-- GENERATOR SECTION -->
+    <div class="generator-section">
+        <h1 class="generator-title">AI Video Generator</h1>
+        <p class="generator-subtitle">Create realistic videos from text (English or Kannada)</p>
+
+        <!-- Language Selection -->
+        <div class="lang-options">
+            <div class="lang-pill active" data-lang="english" onclick="selectLang('english')">🇺🇸 English</div>
+            <div class="lang-pill" data-lang="kannada" onclick="selectLang('kannada')">🇮🇳 Kannada</div>
+        </div>
+
+        <div class="input-wrapper">
+            <textarea id="mainInput" class="main-input" rows="2"
+                placeholder="Describe your word (e.g., 'lion')..."></textarea>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-voice" id="recordBtn" title="Speak">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button class="btn-voice" id="uploadBtn" title="Upload Audio">
+                <i class="fas fa-upload"></i>
+            </button>
+            <button class="btn-generate" onclick="generateVideo()">
+                <i class="fas fa-magic"></i> Generate Video
+            </button>
+
+            <!-- Hidden Audio Input -->
+            <input type="file" id="audioFileInput" accept="audio/*">
+        </div>
+
+        <!-- Hidden fields for the generator -->
+        <input type="hidden" id="audioPath" value="">
+
+        <!-- Status Messages -->
+        <div id="statusMsg" style="margin-top: 1rem; color: #aaa; min-height: 1.5em;"></div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingArea" class="loading-container">
+            <div class="spinner"></div>
+            <h3>Generating Video Locally...</h3>
+            <p>Processing with <b>Hardware Accelerated AI</b>. This may take a few minutes.</p>
+            <p style="font-size: 0.9rem; color: #888;">Please do not close this tab.</p>
+        </div>
+
+        <!-- Result Area -->
+        <div id="resultArea" class="result-area">
+            <h3>Your Video is Ready!</h3>
+            <video id="resultVideo" controls autoplay loop>
+                Your browser does not support the video tag.
+            </video>
+            <div style="margin-top: 1.5rem;">
+                <a id="downloadLink" href="#" class="btn-generate"
+                    style="text-decoration: none; display: inline-block;">
+                    <i class="fas fa-download"></i> Download Video
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HISTORY SECTION -->
+    <div class="history-section">
+        <h2 class="history-title"><i class="fas fa-history"></i> Recent Generations</h2>
+
+        {% if videos %}
+        <div class="video-grid">
+            {% for video in videos %}
+            <div class="video-card">
+                <div style="position: relative; padding-top: 56.25%;">
+                    <video style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" controls
+                        preload="metadata">
+                        <source src="{{ url_for('get_video', video_id=video.unique_id) }}" type="video/mp4">
+                    </video>
+                </div>
+                <div class="card-info">
+                    <div class="card-title">{{ video.input_text }}</div>
+                    <div class="card-meta">
+                        <span>{{ video.language|title if video.language else '' }}</span>
+                        <span><a href="{{ url_for('download_video', video_id=video.unique_id) }}"
+                                style="color: var(--primary);">Download</a></span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; color: #666;">No videos generated yet.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

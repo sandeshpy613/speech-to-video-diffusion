@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - AI Video Generator{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h2>Create Account</h2>
+            <p>Start generating amazing videos with AI</p>
+        </div>
+
+        <form id="signupForm" class="auth-form">
+            <div class="form-group">
+                <label for="username">
+                    <i class="fas fa-user"></i> Username
+                </label>
+                <input type="text" id="username" name="username" required placeholder="Choose a username"
+                    autocomplete="username" minlength="3">
+            </div>
+
+            <div class="form-group">
+                <label for="email">
+                    <i class="fas fa-envelope"></i> Email Address
+                </label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email"
+                    autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">
+                    <i class="fas fa-lock"></i> Password
+                </label>
+                <input type="password" id="password" name="password" required placeholder="Create a password"
+                    autocomplete="new-password" minlength="6">
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">
+                    <i class="fas fa-lock"></i> Confirm Password
+                </label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required
+                    placeholder="Confirm your password" autocomplete="new-password" minlength="6">
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="signupBtn">
+                <i class="fas fa-user-plus"></i> Create Account
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const signupBtn = document.getElementById('signupBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        // Hide messages
+        errorMessage.style.display = 'none';
+        successMessage.style.display = 'none';
+
+        // Validate passwords match
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            errorMessage.textContent = 'Passwords do not match';
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        // Disable button and show loading
+        signupBtn.disabled = true;
+        signupBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+
+        const formData = {
+            username: document.getElementById('username').value,
+            email: document.getElementById('email').value,
+            password: password
+        };
+
+        try {
+            const response = await fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Show success message
+                successMessage.textContent = data.message;
+                successMessage.style.display = 'block';
+
+                // Redirect to login after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
+            } else {
+                // Show error
+                errorMessage.textContent = data.message;
+                errorMessage.style.display = 'block';
+                signupBtn.disabled = false;
+                signupBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+            }
+        } catch (error) {
+            errorMessage.textContent = 'An error occurred. Please try again.';
+            errorMessage.style.display = 'block';
+            signupBtn.disabled = false;
+            signupBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+        }
+    });
+</script>
+{% endblock %}

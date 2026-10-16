@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-background"></div>
+    <div class="container hero-content">
+        <div class="hero-text">
+            <h1 class="hero-title">
+                Transform Words into
+                <span class="gradient-text">Stunning Videos</span>
+            </h1>
+            <p class="hero-subtitle">
+                Powered by cutting-edge AI and GAN technology. Speak in English or Kannada,
+                and watch your imagination come to life in beautiful, dynamic videos.
+            </p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('signup') }}" class="btn btn-primary btn-large">
+                    <i class="fas fa-rocket"></i> Get Started Free
+                </a>
+                <a href="#features" class="btn btn-secondary btn-large">
+                    <i class="fas fa-play-circle"></i> Learn More
+                </a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-card card-1">
+                <i class="fas fa-microphone"></i>
+                <span>Voice Input</span>
+            </div>
+            <div class="floating-card card-2">
+                <i class="fas fa-brain"></i>
+                <span>AI Processing</span>
+            </div>
+            <div class="floating-card card-3">
+                <i class="fas fa-video"></i>
+                <span>Video Output</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="features" class="features-section">
+    <div class="container">
+        <h2 class="section-title">Powerful Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3>Multi-Language Support</h3>
+                <p>Speak in English or Kannada. Our AI understands both languages perfectly.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-microphone-alt"></i>
+                </div>
+                <h3>Voice & Text Input</h3>
+                <p>Choose between voice recording or typing your ideas directly.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>GAN Technology</h3>
+                <p>Advanced Generative Adversarial Networks create stunning visuals.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-download"></i>
+                </div>
+                <h3>Easy Download</h3>
+                <p>Download your generated videos in high quality MP4 format.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Lightning Fast</h3>
+                <p>Generate videos in seconds with our optimized AI pipeline.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <h3>History Tracking</h3>
+                <p>Access all your previously generated videos anytime.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Create Amazing Videos?</h2>
+            <p>Join thousands of creators using AI to bring their ideas to life</p>
+            <a href="{{ url_for('signup') }}" class="btn btn-primary btn-large">
+                <i class="fas fa-user-plus"></i> Create Free Account
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,249 @@
+/* --- TITAN DESIGN SYSTEM --- */
+:root {
+    --primary: #8b5cf6;
+    --primary-hover: #7c3aed;
+    --secondary: #ec4899;
+    --bg-dark: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --text-white: #f8fafc;
+    --text-gray: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navbar */
+.navbar {
+    padding: 1.5rem 0;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(to right, #fff, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-menu { display: flex; gap: 2rem; align-items: center; }
+
+.nav-link {
+    color: var(--text-gray);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+.nav-link:hover { color: #fff; }
+
+/* Buttons */
+.btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+
+.btn-secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--border-color); }
+.btn-secondary:hover { background: rgba(255,255,255,0.2); }
+
+.btn-large { padding: 1.2rem 2.5rem; font-size: 1.1rem; }
+
+/* Hero Section */
+.hero-section {
+    padding: 8rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+}
+
+.hero-text { flex: 1; }
+
+.hero-visual {
+    flex: 1;
+    position: relative;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-gray);
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+}
+
+.hero-buttons { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
+
+/* Floating Cards */
+.floating-card {
+    position: absolute;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: float 4s ease-in-out infinite;
+}
+
+.card-1 { top: 10%; left: 10%; animation-delay: 0s; }
+.card-2 { top: 40%; right: 5%; animation-delay: 1s; }
+.card-3 { bottom: 10%; left: 20%; animation-delay: 2s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+/* Feature Grid */
+.features-section { padding: 6rem 0; }
+.section-title { font-size: 2.5rem; text-align: center; margin-bottom: 4rem; }
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s;
+}
+.feature-card:hover { transform: translateY(-10px); }
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(139, 92, 246, 0.15);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+/* Auth Pages */
+.auth-container {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.auth-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.8s ease;
+}
+
+.auth-header h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+.auth-header p { color: var(--text-gray); margin-bottom: 2rem; }
+
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-gray); }
+.form-group i { margin-right: 8px; color: var(--primary); }
+
+.form-group input {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn-block { width: 100%; justify-content: center; margin-top: 1rem; }
+
+.error-message { background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.9rem; }
+.success-message { background: rgba(34, 197, 94, 0.1); color: #22c55e; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.9rem; }
+
+.auth-footer { text-align: center; margin-top: 2rem; color: var(--text-gray); }
+.auth-footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+
+/* Footer */
+.footer {
+    padding: 4rem 0;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-gray);
+}
