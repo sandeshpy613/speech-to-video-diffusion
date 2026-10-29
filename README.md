@@ -230,6 +230,3 @@ If you use this project or research in your work, please cite:
 
 ---
 
-## 📜 License
-
-Distributed under the **MIT License**. See `LICENSE` for more information.
